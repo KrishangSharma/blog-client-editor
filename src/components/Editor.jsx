@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
 import ReactQuill from "react-quill";
 import { toast } from "react-toastify";
+import { useState, useRef } from "react";
 import "react-quill/dist/quill.snow.css";
 
 const Editor = () => {
@@ -37,6 +37,9 @@ const Editor = () => {
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // Reference for File input
+  const fileInputRef = useRef(null);
 
   const handleImageChange = (e) => {
     const files = e.target.files;
@@ -74,6 +77,9 @@ const Editor = () => {
       setTitle("");
       setContent("");
       setImages([]);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
       setLoading(false);
     } catch (err) {
       toast.error(err.message);
@@ -108,6 +114,7 @@ const Editor = () => {
           accept="image/*"
           multiple
           onChange={handleImageChange}
+          ref={fileInputRef}
         />
       </div>
       <button className="btn" onClick={submitData}>
