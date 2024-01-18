@@ -34,6 +34,7 @@ const Editor = () => {
 
   // States
   const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -61,6 +62,7 @@ const Editor = () => {
       // Construct FormData
       const data = new FormData();
       data.append("title", title);
+      data.append("description", desc);
       data.append("content", content);
       images.forEach((image) => {
         data.append("images", image);
@@ -75,6 +77,7 @@ const Editor = () => {
       });
       toast.success(response.data.message);
       setTitle("");
+      setDesc("");
       setContent("");
       setImages([]);
       if (fileInputRef.current) {
@@ -99,13 +102,22 @@ const Editor = () => {
         />
       </div>
       <div className="input-grp">
+        <h2>Blog Description</h2>
+        <input
+          type="text"
+          placeholder="What is the blog about...?"
+          value={desc}
+          onChange={(e) => setDesc(e.target.value)}
+        />
+      </div>
+      <div className="input-grp">
         <h2>Blog Content</h2>
         <ReactQuill
           value={content}
           onChange={setContent}
           modules={modules}
           formats={formats}
-          style={{ height: "400px" }}
+          style={{ height: "300px" }}
         />
       </div>
       <div className="img-input">
